@@ -5,6 +5,7 @@ To use the proggram you need to open the comand prompt on your computer and type
 
 
 you will need python to run this proggram download from here : https://www.python.org/downloads/ 
+
 or from the microsoft store here: https://apps.microsoft.com/store/detail/python-311/9NRWMJP3717K
 
 
