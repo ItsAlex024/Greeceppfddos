@@ -29,3 +29,7 @@ or if you downloaded it from the microsoft store do
 python3 main.py
 
 ```
+# New Update Coming soon will have
+
+Scan for open ports in a conection 
+Ipv6 support (like this 2606:4700:3032::6815:2455:)
