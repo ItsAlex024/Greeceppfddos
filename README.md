@@ -12,6 +12,7 @@ To use the proggram you need to open the comand prompt on your computer and type
 ```shell script
 git clone https://github.com/ItsAlex024/Greeceppfddos
 ```
+and then
 ```shell script
 cd Greeceppfddos
 ```
